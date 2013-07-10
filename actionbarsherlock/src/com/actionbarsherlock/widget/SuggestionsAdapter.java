@@ -16,6 +16,7 @@
 
 package com.actionbarsherlock.widget;
 
+import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ComponentName;
@@ -29,6 +30,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.text.Spannable;
@@ -65,6 +67,7 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements OnClickListene
     static final int REFINE_BY_ENTRY = 1;
     static final int REFINE_ALL = 2;
 
+    @SuppressWarnings("unused")
     private SearchManager mSearchManager;
     private SearchableInfo mSearchable;
     private SearchView mSearchView;
@@ -200,6 +203,7 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements OnClickListene
         return null;
     }
 
+    @TargetApi(Build.VERSION_CODES.FROYO)
     public Cursor getSuggestions(String query, int limit) {
         if (mSearchable == null) {
             return null;
@@ -269,6 +273,7 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements OnClickListene
         updateSpinnerState(getCursor());
     }
 
+    @TargetApi(Build.VERSION_CODES.FROYO)
     private void updateSpinnerState(Cursor cursor) {
         Bundle extras = cursor != null ? cursor.getExtras() : null;
         if (DBG) {
@@ -290,6 +295,7 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements OnClickListene
     /**
      * Cache columns.
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void changeCursor(Cursor c) {
         if (DBG) Log.d(LOG_TAG, "changeCursor(" + c + ")");
@@ -685,6 +691,7 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements OnClickListene
      * @return A drawable, or {@code null} if neither the activity nor the application
      *         has an icon set.
      */
+    @SuppressWarnings("unused")
     private Drawable getActivityIconWithCache(ComponentName component) {
         // First check the icon cache
         String componentIconKey = component.flattenToShortString();
