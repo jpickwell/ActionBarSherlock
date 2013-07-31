@@ -16,6 +16,7 @@
 
 package com.actionbarsherlock.internal.widget;
 
+import android.compat.view.ViewCompat;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -53,7 +54,7 @@ public class ActionBarContainer extends NineFrameLayout {
     public ActionBarContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        setBackgroundDrawable(null);
+      ViewCompat.setBackground(this, null);
 
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.SherlockActionBar);

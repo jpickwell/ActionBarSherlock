@@ -16,8 +16,7 @@
 
 package com.actionbarsherlock.internal.view.menu;
 
-import com.actionbarsherlock.R;
-
+import android.compat.view.ViewCompat;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -31,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.actionbarsherlock.R;
 
 /**
  * The item view for each item in the ListView-based MenuViews.
@@ -83,7 +84,7 @@ public class ListMenuItemView extends LinearLayout implements MenuView.ItemView 
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        setBackgroundDrawable(mBackground);
+      ViewCompat.setBackground(this, mBackground);
 
         mTitleView = (TextView) findViewById(R.id.abs__title);
         if (mTextAppearance != -1) {

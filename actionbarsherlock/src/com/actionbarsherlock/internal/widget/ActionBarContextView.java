@@ -15,6 +15,7 @@
  */
 package com.actionbarsherlock.internal.widget;
 
+import android.compat.view.ViewCompat;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -78,8 +79,7 @@ public class ActionBarContextView extends AbsActionBarView implements AnimatorLi
         super(context, attrs, defStyle);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SherlockActionMode, defStyle, 0);
-        setBackgroundDrawable(a.getDrawable(
-                R.styleable.SherlockActionMode_background));
+      ViewCompat.setBackground(this, a.getDrawable(R.styleable.SherlockActionMode_background));
         mTitleStyleRes = a.getResourceId(
                 R.styleable.SherlockActionMode_titleTextStyle, 0);
         mSubtitleStyleRes = a.getResourceId(
@@ -112,7 +112,7 @@ public class ActionBarContextView extends AbsActionBarView implements AnimatorLi
                         LayoutParams.MATCH_PARENT);
                 if (!split) {
                     mMenuView = (ActionMenuView) mActionMenuPresenter.getMenuView(this);
-                    mMenuView.setBackgroundDrawable(null);
+                  ViewCompat.setBackground(mMenuView, null);
                     final ViewGroup oldParent = (ViewGroup) mMenuView.getParent();
                     if (oldParent != null) oldParent.removeView(mMenuView);
                     addView(mMenuView, layoutParams);
@@ -126,7 +126,7 @@ public class ActionBarContextView extends AbsActionBarView implements AnimatorLi
                     layoutParams.width = LayoutParams.MATCH_PARENT;
                     layoutParams.height = mContentHeight;
                     mMenuView = (ActionMenuView) mActionMenuPresenter.getMenuView(this);
-                    mMenuView.setBackgroundDrawable(mSplitBackground);
+                  ViewCompat.setBackground(mMenuView, mSplitBackground);
                     final ViewGroup oldParent = (ViewGroup) mMenuView.getParent();
                     if (oldParent != null) oldParent.removeView(mMenuView);
                     mSplitView.addView(mMenuView, layoutParams);
@@ -228,7 +228,7 @@ public class ActionBarContextView extends AbsActionBarView implements AnimatorLi
         if (!mSplitActionBar) {
             menu.addMenuPresenter(mActionMenuPresenter);
             mMenuView = (ActionMenuView) mActionMenuPresenter.getMenuView(this);
-            mMenuView.setBackgroundDrawable(null);
+          ViewCompat.setBackground(mMenuView, null);
             addView(mMenuView, layoutParams);
         } else {
             // Allow full screen width in split mode.
@@ -241,7 +241,7 @@ public class ActionBarContextView extends AbsActionBarView implements AnimatorLi
             layoutParams.height = mContentHeight;
             menu.addMenuPresenter(mActionMenuPresenter);
             mMenuView = (ActionMenuView) mActionMenuPresenter.getMenuView(this);
-            mMenuView.setBackgroundDrawable(mSplitBackground);
+          ViewCompat.setBackground(mMenuView, mSplitBackground);
             mSplitView.addView(mMenuView, layoutParams);
         }
 
@@ -515,4 +515,28 @@ public class ActionBarContextView extends AbsActionBarView implements AnimatorLi
             //TODO super.onInitializeAccessibilityEvent(event);
         }
     }
+
+  /**
+   * Called when a child view now has or no longer is tracking transient state.
+   *
+   * @param child
+   *   Child view whose state has changed
+   * @param hasTransientState
+   *   true if this child has transient state
+   *
+   * @hide
+   */
+  public void childHasTransientStateChanged(final View child, final boolean hasTransientState)
+  {
+  }
+
+  /**
+   * A child notifies its parent that its state for accessibility has changed. That is some of the child properties reported to accessibility services
+   * has changed, hence the interested services have to be notified for the new state.
+   *
+   * @hide
+   */
+  public void childAccessibilityStateChanged(final View child)
+  {
+  }
 }

@@ -1,9 +1,13 @@
 package com.actionbarsherlock.internal.view;
 
-import com.actionbarsherlock.internal.view.menu.SubMenuWrapper;
-import com.actionbarsherlock.view.ActionProvider;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.view.View;
 
+import com.actionbarsherlock.internal.view.menu.SubMenuWrapper;
+import com.actionbarsherlock.view.ActionProvider;
+
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ActionProviderWrapper extends android.view.ActionProvider {
     private final ActionProvider mProvider;
 
@@ -19,6 +23,7 @@ public class ActionProviderWrapper extends android.view.ActionProvider {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public View onCreateActionView() {
         return mProvider.onCreateActionView();
     }

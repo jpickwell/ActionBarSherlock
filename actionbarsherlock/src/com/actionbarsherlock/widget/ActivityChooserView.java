@@ -16,12 +16,9 @@
 
 package com.actionbarsherlock.widget;
 
-import android.os.Build;
-import com.actionbarsherlock.R;
-import com.actionbarsherlock.internal.widget.IcsLinearLayout;
-import com.actionbarsherlock.internal.widget.IcsListPopupWindow;
-import com.actionbarsherlock.view.ActionProvider;
-import com.actionbarsherlock.widget.ActivityChooserModel.ActivityChooserModelClient;
+import android.annotation.TargetApi;
+import android.compat.view.ViewCompat;
+import android.compat.view.ViewTreeObserverCompat;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +27,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +40,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import com.actionbarsherlock.R;
+import com.actionbarsherlock.internal.widget.IcsLinearLayout;
+import com.actionbarsherlock.internal.widget.IcsListPopupWindow;
+import com.actionbarsherlock.view.ActionProvider;
+import com.actionbarsherlock.widget.ActivityChooserModel.ActivityChooserModelClient;
 
 /**
  * This class is a view for choosing an activity for handling a given {@link Intent}.
@@ -375,7 +379,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
             getListPopupWindow().dismiss();
             ViewTreeObserver viewTreeObserver = getViewTreeObserver();
             if (viewTreeObserver.isAlive()) {
-                viewTreeObserver.removeGlobalOnLayoutListener(mOnGlobalLayoutListener);
+              ViewTreeObserverCompat.removeOnGlobalLayoutListener(viewTreeObserver, mOnGlobalLayoutListener);
             }
         }
         return true;
@@ -417,7 +421,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
         }
         ViewTreeObserver viewTreeObserver = getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
-            viewTreeObserver.removeGlobalOnLayoutListener(mOnGlobalLayoutListener);
+          ViewTreeObserverCompat.removeOnGlobalLayoutListener(viewTreeObserver, mOnGlobalLayoutListener);
         }
         mIsAttachedToWindow = false;
     }
@@ -534,14 +538,38 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
         }
         // Activity chooser content.
         if (mDefaultActivityButton.getVisibility() == VISIBLE) {
-            mActivityChooserContent.setBackgroundDrawable(mActivityChooserContentBackground);
+          ViewCompat.setBackground(mActivityChooserContent, mActivityChooserContentBackground);
         } else {
-            mActivityChooserContent.setBackgroundDrawable(null);
+          ViewCompat.setBackground(mActivityChooserContent, null);
             mActivityChooserContent.setPadding(0, 0, 0, 0);
         }
     }
 
-    /**
+  /**
+   * Called when a child view now has or no longer is tracking transient state.
+   *
+   * @param child
+   *   Child view whose state has changed
+   * @param hasTransientState
+   *   true if this child has transient state
+   *
+   * @hide
+   */
+  public void childHasTransientStateChanged(final View child, final boolean hasTransientState)
+  {
+  }
+
+  /**
+   * A child notifies its parent that its state for accessibility has changed. That is some of the child properties reported to accessibility services
+   * has changed, hence the interested services have to be notified for the new state.
+   *
+   * @hide
+   */
+  public void childAccessibilityStateChanged(final View child)
+  {
+  }
+
+  /**
      * Interface implementation to avoid publishing them in the APIs.
      */
     private class Callbacks implements AdapterView.OnItemClickListener,
@@ -625,6 +653,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
     }
 
     private static class SetActivated {
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         public static void invoke(View view, boolean activated) {
             view.setActivated(activated);
         }

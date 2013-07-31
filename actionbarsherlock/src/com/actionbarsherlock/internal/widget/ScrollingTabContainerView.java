@@ -15,6 +15,7 @@
  */
 package com.actionbarsherlock.internal.widget;
 
+import android.compat.view.ViewCompat;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -277,7 +278,7 @@ public class ScrollingTabContainerView extends NineHorizontalScrollView
         tabView.init(this, tab, forAdapter);
 
         if (forAdapter) {
-            tabView.setBackgroundDrawable(null);
+          ViewCompat.setBackground(tabView, null);
             tabView.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT,
                     mContentHeight));
         } else {
